@@ -14,6 +14,7 @@ const errorHandler = (err, req, res, next) => {
   }
 
   const errorResponse = {
+    success: false,
     name: err.name,
     message: err.message,
     operational: err.operational,
