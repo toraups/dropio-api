@@ -5,7 +5,7 @@ import DailyRotateFile from "winston-daily-rotate-file";
 import Context from "./Context.js";
 
 const NODE_ENV = process.env.NODE_ENV || "development";
-const LOG_DIR = path.resolve(process.env.LOG_DIR || "src/logs");
+const LOG_DIR = path.resolve("logs");
 
 if (!fs.existsSync(LOG_DIR)) {
   fs.mkdirSync(LOG_DIR, { recursive: true });

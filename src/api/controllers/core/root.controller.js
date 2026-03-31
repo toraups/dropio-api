@@ -3,9 +3,7 @@ class RootController {
   // @route   GET /
   // @access  Public
   static getRootMessage = (req, res) => {
-    res
-      .status(200)
-      .json({ message: "Welcome to Dropio API", timestamp: new Date() });
+    res.status(200).json({ message: "Welcome to Dropio API" });
   };
 }
 

@@ -4,7 +4,7 @@ import AuthService from "../../services/v1/auth.service.js";
 
 // Utils
 const setCookie = (res, token) => {
-  res.cookie("x-access-token", token, {
+  res.cookie("accessToken", token, {
     httpOnly: true,
     secure: env.core.node_env === "production",
     maxAge: 1000 * 60 * 15,
@@ -12,8 +12,8 @@ const setCookie = (res, token) => {
   });
 };
 
-const clearCookie = (res, name) => {
-  res.clearCookie(name, {
+const clearCookie = (res) => {
+  res.clearCookie("accessToken", {
     httpOnly: true,
     secure: env.core.node_env === "production",
     sameSite: "lax",
@@ -53,7 +53,7 @@ class AuthController {
   static logout = asyncHandler(async (req, res) => {
     const { message } = await AuthService.logout();
 
-    clearCookie(res, "x-access-token");
+    clearCookie(res);
 
     res.status(200).json({ success: true, message });
   });
