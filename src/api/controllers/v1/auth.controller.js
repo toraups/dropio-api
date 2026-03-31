@@ -57,6 +57,24 @@ class AuthController {
 
     res.status(200).json({ success: true, message });
   });
+
+  // @desc    Verify email
+  // @route   GET /v1/auth/verify
+  // @access  Public
+  static verifyEmail = asyncHandler(async (req, res) => {
+    const token = req.query.token;
+
+    const { message } = await AuthService.verifyEmail(token);
+
+    res.status(200).json({ success: true, message });
+  });
+
+  // @desc    Reset password
+  // @route   POST /v1/auth/forgot-password
+  // @access  Public
+  static resetPassword = asyncHandler(async (req, res) => {
+    res.status(200).json({ message: "Password reset" });
+  });
 }
 
 export default AuthController;

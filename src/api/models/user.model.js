@@ -42,6 +42,17 @@ const userSchema = new mongoose.Schema(
         "Password must be at least 8 characters long and include at least one letter and one number.",
       ],
     },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      default: null,
+    },
+    verificationExpires: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
