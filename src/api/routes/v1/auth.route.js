@@ -11,7 +11,17 @@ router.post(
   validate(AuthValidator.register),
   AuthController.register,
 );
+
 router.post("/login", validate(AuthValidator.login), AuthController.login);
+
 router.post("/logout", AuthController.logout);
+
+router.get("/verify", AuthController.verifyEmail);
+
+router.post("/resend-email", AuthController.resendEmail);
+
+router.post("/forgot-password", AuthController.forgotPassword);
+
+router.post("/reset-password", AuthController.resetPassword);
 
 export default router;

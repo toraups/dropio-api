@@ -3,7 +3,16 @@ import bcrypt from "bcryptjs";
 
 // Utils
 const transform = (doc, ret) => {
-  const { _id, __v, password, ...rest } = ret;
+  const {
+    _id,
+    __v,
+    password,
+    verificationToken,
+    verificationExpires,
+    resetPasswordToken,
+    resetPasswordExpiry,
+    ...rest
+  } = ret;
   return {
     id: _id.toString(),
     ...rest,
@@ -53,6 +62,13 @@ const userSchema = new mongoose.Schema(
     verificationExpires: {
       type: Date,
     },
+    resetPasswordToken: {
+      type: String,
+      default: null,
+    },
+    resetPasswordExpiry: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
@@ -61,8 +77,9 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-// Hash modified password
+// Pre-save operations
 userSchema.pre("save", async function () {
+  // Hash password
   if (this.isModified("password")) {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);

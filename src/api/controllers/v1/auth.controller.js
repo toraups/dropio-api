@@ -7,7 +7,7 @@ const setCookie = (res, token) => {
   res.cookie("accessToken", token, {
     httpOnly: true,
     secure: env.core.node_env === "production",
-    maxAge: 1000 * 60 * 15,
+    maxAge: 1000 * 60 * 15, // 15 mins
     sameSite: "lax",
   });
 };
@@ -26,7 +26,6 @@ class AuthController {
   // @access  Public
   static register = asyncHandler(async (req, res) => {
     const input = req.body;
-
     const { message, token, data } = await AuthService.register(input);
 
     setCookie(res, token);
@@ -64,16 +63,45 @@ class AuthController {
   static verifyEmail = asyncHandler(async (req, res) => {
     const token = req.query.token;
 
+    console.log(token);
+
     const { message } = await AuthService.verifyEmail(token);
 
     res.status(200).json({ success: true, message });
   });
 
-  // @desc    Reset password
+  // @desc    Resend email verification link
+  // @route   POST /v1/auth/resend-email
+  // @access  Public
+  static resendEmail = asyncHandler(async (req, res) => {
+    const input = req.body;
+
+    const { message } = await AuthService.resendVerificationEmail(input);
+
+    res.status(200).json({ success: true, message });
+  });
+
+  // @desc    Forgot password
   // @route   POST /v1/auth/forgot-password
   // @access  Public
+  static forgotPassword = asyncHandler(async (req, res) => {
+    const input = req.body;
+
+    const { message } = await AuthService.forgotPassword(input);
+
+    res.status(200).json({ success: true, message });
+  });
+
+  // @desc    Reset password
+  // @route   POST /v1/auth/reset-password
+  // @access  Public
   static resetPassword = asyncHandler(async (req, res) => {
-    res.status(200).json({ message: "Password reset" });
+    const token = req.query.token;
+    const input = req.body;
+
+    const { message } = await AuthService.resetPassword(token, input);
+
+    res.status(200).json({ message });
   });
 }
 

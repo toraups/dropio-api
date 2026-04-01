@@ -1,3 +1,5 @@
+import env from "../../config/env.js";
+
 class EmailTemplates {
   static verifyEmail(name, verifyUrl) {
     return `
@@ -6,60 +8,325 @@ class EmailTemplates {
       <head>
         <meta charset="UTF-8" />
         <title>Verify Your Email</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fb;
+          }
+          table {
+            width: 100%;
+            background-color: #f7f9fb;
+            padding: 20px 0;
+          }
+          .email-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #ffffff;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+          }
+          .email-header {
+            background-color: #007bff;
+            padding: 12px 20px;
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+          }
+          .email-body {
+            padding: 30px 20px;
+            text-align: center;
+          }
+          .email-body h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+          }
+          .email-body p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0 0 20px;
+          }
+          .email-body .cta-button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 16px;
+            display: inline-block;
+            margin: 20px 0;
+          }
+          .email-footer {
+            background-color: #f4f7fc;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #e0e7f1;
+          }
+          .email-footer a {
+            color: #007bff;
+            text-decoration: none;
+          }
+        </style>
       </head>
-      <body style="margin:0; padding:0; background-color:#f4f6f8; font-family: Arial, sans-serif;">
-        <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f8; padding: 20px 0;">
+      <body>
+        <table>
           <tr>
             <td align="center">
-              
-              <table width="100%" style="max-width:600px; background:#ffffff; border-radius:8px; overflow:hidden;">
-                
+              <div class="email-container">
                 <!-- Header -->
-                <tr>
-                  <td style="background:#4f46e5; padding:20px; text-align:center; color:#ffffff; font-size:20px; font-weight:bold;">
-                    Dropio
-                  </td>
-                </tr>
+                <div class="email-header">
+                  Dropio
+                </div>
 
                 <!-- Body -->
-                <tr>
-                  <td style="padding:30px;">
-                    <h2 style="margin:0 0 10px; color:#111827;">Hello ${name},</h2>
-                    
-                    <p style="margin:0 0 20px; color:#4b5563; line-height:1.5;">
-                      Thanks for signing up! Please verify your email address by clicking the button below.
-                    </p>
+                <div class="email-body">
+                  <h1>Hello ${name},</h1>
+                  <p>Thank you for signing up! To complete your registration, please verify your email address by clicking the button below:</p>
 
-                    <table cellpadding="0" cellspacing="0" style="margin:20px 0;">
-                      <tr>
-                        <td align="center">
-                          <a href="${verifyUrl}" 
-                             style="background:#4f46e5; color:#ffffff; padding:12px 24px; text-decoration:none; border-radius:6px; display:inline-block; font-weight:bold;">
-                            Verify Email
-                          </a>
-                        </td>
-                      </tr>
-                    </table>
+                  <a href="${verifyUrl}" class="cta-button">Verify Email</a>
 
-                    <p style="margin:0 0 10px; color:#6b7280; font-size:14px;">
-                      This link will expire in 1 hour.
-                    </p>
-
-                    <p style="margin:0; color:#9ca3af; font-size:12px;">
-                      If you didn’t create an account, you can safely ignore this email.
-                    </p>
-                  </td>
-                </tr>
+                  <p>This link will expire in 1 hour.</p>
+                  <p>If you did not create an account with us, please ignore this email.</p>
+                </div>
 
                 <!-- Footer -->
-                <tr>
-                  <td style="background:#f9fafb; padding:15px; text-align:center; font-size:12px; color:#9ca3af;">
-                    © ${new Date().getFullYear()} Dropio. All rights reserved.
-                  </td>
-                </tr>
+                <div class="email-footer">
+                  <p>&copy; ${new Date().getFullYear()} Dropio. All rights reserved.</p>
+                  <p><a href="${env.core.client_url}">Visit our website</a></p>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `;
+  }
 
-              </table>
+  static forgotPassword(name, resetUrl) {
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8" />
+        <title>Forgot Your Password?</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fb;
+          }
+          table {
+            width: 100%;
+            background-color: #f7f9fb;
+            padding: 20px 0;
+          }
+          .email-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #ffffff;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+          }
+          .email-header {
+            background-color: #007bff;
+            padding: 12px 20px;
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+          }
+          .email-body {
+            padding: 30px 20px;
+            text-align: center;
+          }
+          .email-body h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+          }
+          .email-body p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0 0 20px;
+          }
+          .email-body .cta-button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 16px;
+            display: inline-block;
+            margin: 20px 0;
+          }
+          .email-footer {
+            background-color: #f4f7fc;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #e0e7f1;
+          }
+          .email-footer a {
+            color: #007bff;
+            text-decoration: none;
+          }
+        </style>
+      </head>
+      <body>
+        <table>
+          <tr>
+            <td align="center">
+              <div class="email-container">
+                <!-- Header -->
+                <div class="email-header">
+                  Dropio
+                </div>
 
+                <!-- Body -->
+                <div class="email-body">
+                  <h1>Password Reset Requested</h1>
+                  <p>Hi ${name},</p>
+                  <p>We received a request to reset your password. You can reset your password by clicking the button below:</p>
+
+                  <a href="${resetUrl}" class="cta-button">Reset Password</a>
+
+                  <p>If you did not request this, you can ignore this email.</p>
+                </div>
+
+                <!-- Footer -->
+                <div class="email-footer">
+                  <p>&copy; ${new Date().getFullYear()} Dropio. All rights reserved.</p>
+                  <p><a href="${env.core.client_url}">Visit our website</a></p>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `;
+  }
+
+  static resetPassword(name) {
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8" />
+        <title>Password Reset Successful</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fb;
+          }
+          table {
+            width: 100%;
+            background-color: #f7f9fb;
+            padding: 20px 0;
+          }
+          .email-container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #ffffff;
+            margin: 0 auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+          }
+          .email-header {
+            background-color: #007bff;
+            padding: 12px 20px;
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+          }
+          .email-body {
+            padding: 30px 20px;
+            text-align: center;
+          }
+          .email-body h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+          }
+          .email-body p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0 0 20px;
+          }
+          .email-body .cta-button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 16px;
+            display: inline-block;
+            margin: 20px 0;
+          }
+          .email-footer {
+            background-color: #f4f7fc;
+            padding: 15px 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            border-top: 1px solid #e0e7f1;
+          }
+          .email-footer a {
+            color: #007bff;
+            text-decoration: none;
+          }
+        </style>
+      </head>
+      <body>
+        <table>
+          <tr>
+            <td align="center">
+              <div class="email-container">
+                <!-- Header -->
+                <div class="email-header">
+                  Dropio
+                </div>
+
+                <!-- Body -->
+                <div class="email-body">
+                  <h1>Your Password Has Been Reset</h1>
+                  <p>Hi ${name},</p>
+                  <p>Your password has been successfully reset. You can now log in with your new password.</p>
+
+                  <p>If you did not initiate this request, please contact our support team immediately.</p>
+                </div>
+
+                <!-- Footer -->
+                <div class="email-footer">
+                  <p>&copy; ${new Date().getFullYear()} Dropio. All rights reserved.</p>
+                  <p><a href="${env.core.client_url}">Visit our website</a></p>
+                </div>
+              </div>
             </td>
           </tr>
         </table>

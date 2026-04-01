@@ -22,7 +22,7 @@ const connectDb = async () => {
   try {
     await mongoose.connect(env.core.db_uri);
   } catch (error) {
-    logger.error(error.message);
+    logger.error(`Database connection failed, ${error.message}`);
     process.exit(1);
   }
 };
