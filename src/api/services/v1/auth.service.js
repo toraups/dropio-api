@@ -32,11 +32,9 @@ class AuthService {
       throw new ValidationError("Email already registered");
     }
 
-    // Generate verification token
     const rawToken = Token.generateToken();
     const hashedToken = Token.hashToken(rawToken);
 
-    // Create user (single DB write)
     const newUser = await User.create({
       name,
       email,
@@ -45,16 +43,10 @@ class AuthService {
       verificationExpires: new Date(Date.now() + 1000 * 60 * 60),
     });
 
-    // Auth token
     const token = Jwt.signToken({ id: newUser._id.toString() });
-
-    // Verification URL (FULL URL)
     const verificationUrl = `${env.core.client_url}/v1/auth/verify?token=${rawToken}`;
-
-    // Email template
     const html = EmailTemplates.verifyEmail(newUser.name, verificationUrl);
 
-    // Send email
     await MailService.sendMail({
       to: newUser.email,
       subject: "Verify your email",
@@ -140,8 +132,9 @@ class AuthService {
       await user.save();
 
       // Resend verification email
-      const verificationUrl = `${env.core.client_url}/verify?token=${rawToken}`;
+      const verificationUrl = `${env.core.client_url}/v1/auth/verify?token=${rawToken}`;
       const html = EmailTemplates.verifyEmail(user.name, verificationUrl);
+
       await MailService.sendMail({
         to: user.email,
         subject: "Verify your email",
@@ -165,7 +158,6 @@ class AuthService {
 
     checkUser(user);
 
-    // Generate password reset token and expiry
     const rawToken = Token.generateToken();
     const hashedToken = Token.hashToken(rawToken);
 
@@ -173,12 +165,9 @@ class AuthService {
     user.resetPasswordExpiry = new Date(Date.now() + 1000 * 60 * 30);
     await user.save();
 
-    const resetPasswordUrl = `${env.core.client_url}/reset?token=${rawToken}`;
-
-    // Create email
+    const resetPasswordUrl = `${env.core.client_url}/v1/auth/reset?token=${rawToken}`;
     const html = EmailTemplates.forgotPassword(user.name, resetPasswordUrl);
 
-    // Send email
     await MailService.sendMail({
       to: user.email,
       subject: "Reset your password",
