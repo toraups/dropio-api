@@ -7,6 +7,7 @@ const transform = (doc, ret) => {
     _id,
     __v,
     password,
+    isVerified,
     verificationToken,
     verificationExpires,
     resetPasswordToken,
