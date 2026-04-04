@@ -10,26 +10,16 @@ const protect = async (req, res, next) => {
     throw new AuthenticationError("Invalid or missing JWT token");
   }
 
-  try {
-    const token = authHeader.split(" ")[1];
-    const decoded = Jwt.verifyToken(token);
-    const user = await User.findById(decoded.id);
+  const token = authHeader.split(" ")[1];
+  const decoded = Jwt.verifyToken(token);
+  const user = await User.findById(decoded.id);
 
-    if (!user) {
-      throw new NotFoundError("User not found");
-    }
-
-    req.user = user.toObject();
-    next();
-  } catch (error) {
-    if (error instanceof AuthenticationError) {
-      return res.status(401).json({ success: false, message: error.message });
-    } else if (error instanceof NotFoundError) {
-      return res.status(404).json({ success: false, message: error.message });
-    }
-
-    throw error;
+  if (!user) {
+    throw new NotFoundError("User not found");
   }
+
+  req.user = user.toObject();
+  next();
 };
 
 export default protect;
