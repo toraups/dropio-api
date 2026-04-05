@@ -49,6 +49,28 @@ class QueryBuilder {
     return this;
   }
 
+  search(searchFields = []) {
+    if (this.queryParams.search && searchFields.length) {
+      const regex = new RegExp(this.queryParams.search, "i");
+      const searchQuery = searchFields.map((field) => ({ [field]: regex }));
+      this.query = this.query.find({ $or: searchQuery });
+    }
+    return this;
+  }
+
+  populateFilter(populateFields = []) {
+    populateFields.forEach((pop) => {
+      const { path, match } = pop;
+
+      if (match) {
+        this.query = this.query.populate({ path, match });
+      } else {
+        this.query = this.query.populate(path);
+      }
+    });
+    return this;
+  }
+
   async exec() {
     return await this.query;
   }

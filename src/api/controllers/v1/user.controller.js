@@ -2,6 +2,21 @@ import asyncHandler from "express-async-handler";
 import UserService from "../../services/v1/user.service.js";
 
 class UserController {
+  // ───── PUBLIC CONTROLLERS ───────────────
+
+  // @desc    Get users
+  // @route   GET /v1/users
+  // @access  Public
+  static getUsers = asyncHandler(async (req, res) => {
+    const query = req.query;
+
+    const { message, data } = await UserService.getUsers(query);
+
+    res.status(200).json({ success: true, message, data });
+  });
+
+  // ───── PRIVATE CONTROLLERS ───────────────
+
   // @desc    Get user profile
   // @route   GET /v1/users/me
   // @access  Private
@@ -46,17 +61,6 @@ class UserController {
     const { message } = await UserService.deleteMe(id);
 
     res.status(200).json({ success: true, message });
-  });
-
-  // @desc    Get users
-  // @route   GET /v1/users
-  // @access  Public
-  static getUsers = asyncHandler(async (req, res) => {
-    const query = req.query;
-
-    const { message, data } = await UserService.getUsers(query);
-
-    res.status(200).json({ success: true, message, data });
   });
 }
 

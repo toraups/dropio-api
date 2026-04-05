@@ -4,20 +4,6 @@ import AuthenticationError from "../../utils/error-factory/AuthenticationError.j
 import QueryBuilder from "../../utils/QueryBuilder.js";
 
 class UserService {
-  // @desc    Get users
-  // @access  Public
-  static getUsers = async (queryParams) => {
-    const query = new QueryBuilder(User, queryParams)
-      .filter()
-      .sort()
-      .limitFields()
-      .pagination();
-
-    const users = await query.exec();
-
-    return { message: "Users retrieved", data: users };
-  };
-
   // Update profile
   static updateMe = async (id, input) => {
     const { name } = input;
@@ -61,6 +47,21 @@ class UserService {
     await User.findByIdAndDelete(id);
 
     return { message: "User profile deleted" };
+  };
+
+  // @desc    Get users
+  // @access  Public
+  static getUsers = async (queryParams) => {
+    const query = new QueryBuilder(User, queryParams)
+      .search(["name", "email"])
+      .filter()
+      .sort()
+      .limitFields()
+      .pagination();
+
+    const users = await query.exec();
+
+    return { message: "Users retrieved", data: users };
   };
 }
 
