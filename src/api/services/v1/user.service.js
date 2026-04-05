@@ -1,8 +1,23 @@
 import User from "../../models/user.model.js";
 import ValidationError from "../../utils/error-factory/ValidationError.js";
 import AuthenticationError from "../../utils/error-factory/AuthenticationError.js";
+import QueryBuilder from "../../utils/QueryBuilder.js";
 
 class UserService {
+  // @desc    Get users
+  // @access  Public
+  static getUsers = async (queryParams) => {
+    const query = new QueryBuilder(User, queryParams)
+      .filter()
+      .sort()
+      .limitFields()
+      .pagination();
+
+    const users = await query.exec();
+
+    return { message: "Users retrieved", data: users };
+  };
+
   // Update profile
   static updateMe = async (id, input) => {
     const { name } = input;

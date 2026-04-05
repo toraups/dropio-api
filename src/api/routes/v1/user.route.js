@@ -5,8 +5,9 @@ import protect from "../../middlewares/auth.middleware.js";
 const router = express.Router();
 
 // Routes
-router.use(protect);
+router.get("/", UserController.getUsers);
 
+router.use(protect);
 router.get("/me", UserController.getMe);
 router.patch("/me", UserController.updateMe);
 router.patch("/me/password", UserController.updatePassword);

@@ -47,6 +47,17 @@ class UserController {
 
     res.status(200).json({ success: true, message });
   });
+
+  // @desc    Get users
+  // @route   GET /v1/users
+  // @access  Public
+  static getUsers = asyncHandler(async (req, res) => {
+    const query = req.query;
+
+    const { message, data } = await UserService.getUsers(query);
+
+    res.status(200).json({ success: true, message, data });
+  });
 }
 
 export default UserController;
